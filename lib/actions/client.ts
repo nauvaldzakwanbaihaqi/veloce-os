@@ -28,6 +28,28 @@ export async function createClient(data: Omit<NewClient, "id" | "createdAt" | "u
   revalidatePath("/clients");
 }
 
+export async function getClientById(id: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+  const userId = session.user.id;
+
+  const client = await db.query.clients.findFirst({
+    where: (clients, { eq, and }) =>
+      and(eq(clients.id, id), eq(clients.userId, userId)),
+    with: {
+      projects: {
+        with: {
+          invoices: true,
+        },
+        orderBy: (projects, { desc }) => [desc(projects.createdAt)],
+      },
+    },
+  });
+
+  if (!client) return null;
+  return client;
+}
+
 export async function deleteClient(id: string) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
@@ -35,3 +57,4 @@ export async function deleteClient(id: string) {
   await db.delete(clients).where(eq(clients.id, id));
   revalidatePath("/clients");
 }
+

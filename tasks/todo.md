@@ -11,7 +11,20 @@ Cara pakai (untuk kamu dan untuk agent):
 
 ## Current Task
 
-*Semua phase MVP (Phase 1, 2, 3, 4) telah selesai dilaksanakan.*
+*Seluruh fitur MVP & Detail Pages (Phase 1 s/d Phase 5) telah selesai dilaksanakan.*
+
+## Done
+
+### Phase 5: Detail Pages, Sidebar User Profile & Seed Script ✅
+
+**Selesai: 2026-08-14**
+
+- [x] Server actions `lib/actions/client.ts` & `lib/actions/project.ts`: Added `getClientById`, `getProjectById`, dan `updateProjectStatus`.
+- [x] Halaman Detail Klien (`app/(dashboard)/clients/[id]/page.tsx`): Info kontak, catatan, stats revenue terbayar, serta tabel proyek & invoice terkait.
+- [x] Halaman Detail Proyek (`app/(dashboard)/projects/[id]/page.tsx`): Info nilai proyek, tanggal mulai/due, interactive status selector, serta daftar invoice terkait.
+- [x] User Profile & Logout: `components/layout/app-sidebar.tsx` dilengkapi dengan footer avatar user & server action `logout()`.
+- [x] Demo Seed Script: `scripts/seed.ts` & command `pnpm seed` untuk membuat data sampel demo (user, clients, projects, invoices).
+- [x] Lolos `pnpm lint` & `pnpm build`.
 
 ## Done
 

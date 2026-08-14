@@ -7,6 +7,7 @@ import { Trash2 } from "lucide-react";
 import { deleteProject } from "@/lib/actions/project";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 type ProjectWithClient = Project & { client: Client };
 
@@ -66,8 +67,16 @@ export function ProjectTable({ projects }: { projects: ProjectWithClient[] }) {
           ) : (
             projects.map((project) => (
               <TableRow key={project.id}>
-                <TableCell className="font-medium">{project.title}</TableCell>
-                <TableCell>{project.client.name}</TableCell>
+                <TableCell className="font-medium">
+                  <Link href={`/projects/${project.id}`} className="hover:underline text-primary">
+                    {project.title}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/clients/${project.client.id}`} className="hover:underline text-muted-foreground hover:text-foreground">
+                    {project.client.name}
+                  </Link>
+                </TableCell>
                 <TableCell><StatusBadge status={project.status} /></TableCell>
                 <TableCell>{formatCurrency(project.value)}</TableCell>
                 <TableCell>{project.dueDate ? new Date(project.dueDate).toLocaleDateString('id-ID') : "-"}</TableCell>

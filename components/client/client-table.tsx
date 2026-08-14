@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { deleteClient } from "@/lib/actions/client";
 import { useState } from "react";
+import Link from "next/link";
 
 export function ClientTable({ clients }: { clients: Client[] }) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -44,7 +45,11 @@ export function ClientTable({ clients }: { clients: Client[] }) {
           ) : (
             clients.map((client) => (
               <TableRow key={client.id}>
-                <TableCell className="font-medium">{client.name}</TableCell>
+                <TableCell className="font-medium">
+                  <Link href={`/clients/${client.id}`} className="hover:underline text-primary">
+                    {client.name}
+                  </Link>
+                </TableCell>
                 <TableCell>{client.company || "-"}</TableCell>
                 <TableCell>{client.email || "-"}</TableCell>
                 <TableCell>{client.phone || "-"}</TableCell>

@@ -31,6 +31,39 @@ export async function createProject(data: Omit<NewProject, "id" | "createdAt" | 
   revalidatePath("/projects");
 }
 
+export async function getProjectById(id: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+  const userId = session.user.id;
+
+  const project = await db.query.projects.findFirst({
+    where: (projects, { eq, and }) =>
+      and(eq(projects.id, id), eq(projects.userId, userId)),
+    with: {
+      client: true,
+      invoices: {
+        orderBy: (invoices, { desc }) => [desc(invoices.createdAt)],
+      },
+    },
+  });
+
+  if (!project) return null;
+  return project;
+}
+
+export async function updateProjectStatus(
+  id: string,
+  status: "LEAD" | "IN_PROGRESS" | "REVIEW" | "COMPLETED"
+) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  await db.update(projects).set({ status }).where(eq(projects.id, id));
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${id}`);
+  revalidatePath("/dashboard");
+}
+
 export async function deleteProject(id: string) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");

@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Users, Briefcase, FileText, LogOut, User, Settings } from "lucide-react";
+import { Home, Users, Briefcase, FileText, LogOut, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -48,8 +48,21 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  userName: string;
+  userEmail: string;
+}
+
+export function AppSidebar({ userName, userEmail }: AppSidebarProps) {
   const pathname = usePathname();
+
+  // Generate initials from user name (e.g. "Alex Aethera" → "AA")
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <Sidebar>
@@ -79,12 +92,12 @@ export function AppSidebar() {
       <SidebarFooter className="border-t p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 overflow-hidden">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <User className="h-4 w-4" />
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold">
+              {initials}
             </div>
             <div className="flex flex-col truncate text-xs">
-              <span className="font-semibold truncate">Aethera Studio</span>
-              <span className="text-muted-foreground truncate">Freelancer</span>
+              <span className="font-semibold truncate">{userName}</span>
+              <span className="text-muted-foreground truncate">{userEmail}</span>
             </div>
           </div>
           <form action={logout}>
@@ -98,4 +111,3 @@ export function AppSidebar() {
     </Sidebar>
   );
 }
-

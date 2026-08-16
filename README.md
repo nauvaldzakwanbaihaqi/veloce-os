@@ -39,15 +39,6 @@ pnpm dlx drizzle-kit migrate
 pnpm dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000).
-
-### Environment variables
-
-```
-DATABASE_URL=
-AUTH_SECRET=
-```
-
 ## Struktur proyek
 
 ```

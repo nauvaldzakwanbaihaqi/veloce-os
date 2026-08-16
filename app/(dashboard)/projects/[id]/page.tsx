@@ -1,4 +1,5 @@
 import { getProjectById } from "@/lib/actions/project";
+import { getClients } from "@/lib/actions/client";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, User, FileText, FileDown, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { ProjectStatusSelect } from "@/components/project/project-status-select";
+import { ProjectEditForm } from "@/components/project/project-edit-form";
 
 function formatCurrency(value: string | number | null) {
   if (!value) return "Rp 0";
@@ -42,7 +44,10 @@ export default async function ProjectDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const project = await getProjectById(id);
+  const [project, clients] = await Promise.all([
+    getProjectById(id),
+    getClients(),
+  ]);
 
   if (!project) {
     notFound();
@@ -60,6 +65,7 @@ export default async function ProjectDetailPage({
         description={`Klien: ${project.client.name}`}
         action={
           <div className="flex items-center gap-2">
+            <ProjectEditForm project={project} clients={clients} />
             <ProjectStatusSelect projectId={project.id} currentStatus={project.status} />
             <Button variant="outline" size="sm" render={<Link href="/projects" />}>
               <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Proyek

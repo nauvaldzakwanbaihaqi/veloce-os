@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { clients, type NewClient } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 
@@ -48,6 +48,22 @@ export async function getClientById(id: string) {
 
   if (!client) return null;
   return client;
+}
+
+export async function updateClient(
+  id: string,
+  data: Partial<Omit<NewClient, "id" | "createdAt" | "userId">>
+) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  await db
+    .update(clients)
+    .set(data)
+    .where(and(eq(clients.id, id), eq(clients.userId, session.user.id)));
+
+  revalidatePath("/clients");
+  revalidatePath(`/clients/${id}`);
 }
 
 export async function deleteClient(id: string) {

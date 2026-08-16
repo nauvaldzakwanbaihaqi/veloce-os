@@ -11,7 +11,21 @@ Cara pakai (untuk kamu dan untuk agent):
 
 ## Current Task
 
-*Seluruh fitur MVP & Detail Pages (Phase 1 s/d Phase 5) telah selesai dilaksanakan.*
+*Seluruh fitur MVP, Detail Pages, Dashboard Charts, Table Filter, Settings, & Landing Page (Phase 1 s/d Phase 6) telah selesai dilaksanakan.*
+
+## Done
+
+### Phase 6: Edit Forms, Dashboard Charts, Table Filtering, Settings & Landing Page ✅
+
+**Selesai: 2026-08-16**
+
+- [x] **Option A — Edit Forms (Client & Project)**: Server actions `updateClient` & `updateProject`, modal dialog `ClientEditForm` & `ProjectEditForm` di halaman list & detail.
+- [x] **Option B — Financial Dashboard Charts**: Komponen visual `FinancialCharts` (`components/dashboard/financial-charts.tsx`) dengan indikator rasio realisasi pendapatan (Paid vs Unpaid) dan breakdown pipeline status proyek.
+- [x] **Option C — Table Search & Filtering**: Fitur pencarian kata kunci dan filter dropdown status pada Client Table, Project Table, dan Invoice Table (termasuk filter status `OVERDUE`).
+- [x] **Option D — Settings Page & Main Landing Page**:
+  - Halaman Pengaturan (`app/(dashboard)/settings/page.tsx`) dan server action `updateUserSettings` untuk mengedit profil & identitas studio/bisnis.
+  - Landing Page Veloce OS modern di `app/page.tsx` (Hero section, live preview mockup, fitur grid, & CTA ke Dashboard/Login).
+- [x] **Verifikasi**: `pnpm lint` (0 error, 0 warning) & `pnpm build` (berhasil 100%).
 
 ## Done
 

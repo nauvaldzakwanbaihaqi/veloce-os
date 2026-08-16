@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Users, Briefcase, FileText, LogOut, User } from "lucide-react";
+import { Home, Users, Briefcase, FileText, LogOut, User, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -40,6 +40,11 @@ const items = [
     title: "Invoices",
     url: "/invoices",
     icon: FileText,
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
   },
 ];
 

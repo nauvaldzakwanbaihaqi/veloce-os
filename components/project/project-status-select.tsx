@@ -26,7 +26,7 @@ export function ProjectStatusSelect({ projectId, currentStatus }: ProjectStatusS
 
   return (
     <Select defaultValue={currentStatus} onValueChange={handleStatusChange} disabled={loading}>
-      <SelectTrigger className="w-[160px] h-9">
+      <SelectTrigger className="w-40 h-9">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

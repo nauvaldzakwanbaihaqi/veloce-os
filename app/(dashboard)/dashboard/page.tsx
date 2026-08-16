@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getDashboardMetrics } from "@/lib/actions/dashboard";
 import { DollarSign, Briefcase, FileText, Users, AlertTriangle, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { FinancialCharts } from "@/components/dashboard/financial-charts";
 
 function formatCurrency(value: string | number) {
   return new Intl.NumberFormat("id-ID", {
@@ -144,6 +145,15 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Visual Charts Component */}
+        <FinancialCharts
+          totalRevenue={metrics.totalRevenue}
+          unpaidTotal={metrics.unpaidInvoicesTotal}
+          overdueTotal={metrics.overdueInvoicesTotal}
+          activeProjectsCount={metrics.activeProjectsCount}
+          recentProjects={metrics.recentProjects}
+        />
 
         {/* Activity & Lists Grid */}
         <div className="grid gap-6 md:grid-cols-2">

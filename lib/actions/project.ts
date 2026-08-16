@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { projects, type NewProject } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 
@@ -59,6 +59,23 @@ export async function updateProjectStatus(
   if (!session?.user?.id) throw new Error("Unauthorized");
 
   await db.update(projects).set({ status }).where(eq(projects.id, id));
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${id}`);
+  revalidatePath("/dashboard");
+}
+
+export async function updateProject(
+  id: string,
+  data: Partial<Omit<NewProject, "id" | "createdAt" | "userId">>
+) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  await db
+    .update(projects)
+    .set(data)
+    .where(and(eq(projects.id, id), eq(projects.userId, session.user.id)));
+
   revalidatePath("/projects");
   revalidatePath(`/projects/${id}`);
   revalidatePath("/dashboard");

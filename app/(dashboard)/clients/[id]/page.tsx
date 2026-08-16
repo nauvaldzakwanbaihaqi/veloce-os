@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { notFound } from "next/navigation";
 import { ArrowLeft, Mail, Phone, Building, FileText, Briefcase, DollarSign, MessageCircle, FileDown } from "lucide-react";
 import Link from "next/link";
+import { ClientEditForm } from "@/components/client/client-edit-form";
 
 function formatCurrency(value: string | number | null) {
   if (!value) return "Rp 0";
@@ -80,9 +81,12 @@ export default async function ClientDetailPage({
         title={client.name}
         description={client.company || "Detail profil dan riwayat klien"}
         action={
-          <Button variant="outline" size="sm" render={<Link href="/clients" />}>
-            <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Klien
-          </Button>
+          <div className="flex items-center gap-2">
+            <ClientEditForm client={client} />
+            <Button variant="outline" size="sm" render={<Link href="/clients" />}>
+              <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Klien
+            </Button>
+          </div>
         }
       />
 

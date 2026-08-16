@@ -34,14 +34,14 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 md:py-32 bg-gradient-to-b from-background via-muted/30 to-background border-b">
+      <section className="relative overflow-hidden py-20 md:py-32 bg-linear-to-b from-background via-muted/30 to-background border-b">
         <div className="container mx-auto px-4 md:px-8 text-center max-w-4xl space-y-8">
           <Badge variant="outline" className="px-3 py-1 rounded-full text-xs font-medium border-primary/30 text-primary bg-primary/5 inline-flex items-center gap-1.5">
             <Zap className="h-3.5 w-3.5 text-amber-500 fill-amber-500" /> Operating System untuk Freelancer & Agensi Kecil
           </Badge>
 
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-            Pusat Kendali Operasional & <span className="bg-gradient-to-r from-primary via-purple-600 to-indigo-600 bg-clip-text text-transparent">Finansial Ringkas</span>
+            Pusat Kendali Operasional & <span className="bg-linear-to-r from-primary via-purple-600 to-indigo-600 bg-clip-text text-transparent">Finansial Ringkas</span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">

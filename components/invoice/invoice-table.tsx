@@ -80,7 +80,7 @@ export function InvoiceTable({ invoices }: { invoices: InvoiceWithProject[] }) {
             />
           </div>
           <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "ALL")}>
-            <SelectTrigger className="w-[140px] h-9 text-xs">
+            <SelectTrigger className="w-35 h-9 text-xs">
               <SelectValue placeholder="Filter status" />
             </SelectTrigger>
             <SelectContent>
@@ -149,7 +149,7 @@ export function InvoiceTable({ invoices }: { invoices: InvoiceWithProject[] }) {
                         onValueChange={(val) => handleStatusChange(inv.id, val)}
                         disabled={loadingId === inv.id}
                       >
-                        <SelectTrigger className="w-[120px] h-8 border-none bg-transparent shadow-none px-0">
+                        <SelectTrigger className="w-30 h-8 border-none bg-transparent shadow-none px-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>

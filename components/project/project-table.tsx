@@ -72,7 +72,7 @@ export function ProjectTable({ projects }: { projects: ProjectWithClient[] }) {
             />
           </div>
           <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "ALL")}>
-            <SelectTrigger className="w-[140px] h-9 text-xs">
+            <SelectTrigger className="w-35 h-9 text-xs">
               <SelectValue placeholder="Filter status" />
             </SelectTrigger>
             <SelectContent>
@@ -98,7 +98,7 @@ export function ProjectTable({ projects }: { projects: ProjectWithClient[] }) {
               <TableHead>Status</TableHead>
               <TableHead>Nilai</TableHead>
               <TableHead>Jatuh Tempo</TableHead>
-              <TableHead className="w-[100px] text-right">Aksi</TableHead>
+              <TableHead className="w-25 text-right">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

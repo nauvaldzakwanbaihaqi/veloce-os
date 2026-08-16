@@ -50,7 +50,7 @@ export function ProjectEditForm({ project, clients }: ProjectEditFormProps) {
       <DialogTrigger render={<Button variant="outline" size="sm" title="Edit Proyek" />}>
         <Edit className="w-4 h-4 mr-1.5" /> Edit Proyek
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <DialogTitle>Edit Data Proyek</DialogTitle>
           <DialogDescription>

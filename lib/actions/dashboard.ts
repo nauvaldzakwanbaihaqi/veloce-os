@@ -4,10 +4,11 @@ import { db } from "@/lib/db";
 import { invoices, projects, clients } from "@/db/schema";
 import { eq, and, inArray, lt, sql } from "drizzle-orm";
 import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export async function getDashboardMetrics() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   const userId = session.user.id;
   const todayStr = new Date().toISOString().split("T")[0];

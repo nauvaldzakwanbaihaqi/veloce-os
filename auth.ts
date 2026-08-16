@@ -42,12 +42,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.sub = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token.id) {
-        session.user.id = token.id as string;
+      // token.sub is the standard JWT claim NextAuth auto-populates from user.id
+      const userId = (token.sub ?? token.id) as string | undefined;
+      if (userId) {
+        session.user.id = userId;
       }
       return session;
     },

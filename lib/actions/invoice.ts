@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { invoices, invoiceItems } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import Decimal from "decimal.js";
 import { invoiceSchema, type InvoiceInput } from "@/lib/validations/invoice";
@@ -18,7 +19,7 @@ function generateInvoiceNumber() {
 
 export async function createInvoice(input: InvoiceInput) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
   const userId = session.user.id;
 
   const parsed = invoiceSchema.parse(input);
@@ -70,7 +71,7 @@ export async function createInvoice(input: InvoiceInput) {
 
 export async function getInvoices() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   return await db.query.invoices.findMany({
     where: eq(invoices.userId, session.user.id),
@@ -87,7 +88,7 @@ export async function getInvoices() {
 
 export async function getInvoiceById(id: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   const invoice = await db.query.invoices.findFirst({
     where: eq(invoices.id, id),
@@ -107,7 +108,7 @@ export async function getInvoiceById(id: string) {
 
 export async function deleteInvoice(id: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db.delete(invoices).where(eq(invoices.id, id));
   revalidatePath("/invoices");
@@ -115,7 +116,7 @@ export async function deleteInvoice(id: string) {
 
 export async function updateInvoiceStatus(id: string, status: "DRAFT" | "SENT" | "PAID" | "CANCELLED") {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db.update(invoices).set({ status }).where(eq(invoices.id, id));
   revalidatePath("/invoices");

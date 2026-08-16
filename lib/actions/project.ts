@@ -4,11 +4,12 @@ import { db } from "@/lib/db";
 import { projects, type NewProject } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 
 export async function getProjects() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   return await db.query.projects.findMany({
     where: eq(projects.userId, session.user.id),
@@ -21,7 +22,7 @@ export async function getProjects() {
 
 export async function createProject(data: Omit<NewProject, "id" | "createdAt" | "userId">) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db.insert(projects).values({
     ...data,
@@ -33,7 +34,7 @@ export async function createProject(data: Omit<NewProject, "id" | "createdAt" | 
 
 export async function getProjectById(id: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
   const userId = session.user.id;
 
   const project = await db.query.projects.findFirst({
@@ -56,7 +57,7 @@ export async function updateProjectStatus(
   status: "LEAD" | "IN_PROGRESS" | "REVIEW" | "COMPLETED"
 ) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db.update(projects).set({ status }).where(eq(projects.id, id));
   revalidatePath("/projects");
@@ -69,7 +70,7 @@ export async function updateProject(
   data: Partial<Omit<NewProject, "id" | "createdAt" | "userId">>
 ) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db
     .update(projects)
@@ -83,7 +84,7 @@ export async function updateProject(
 
 export async function deleteProject(id: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db.delete(projects).where(eq(projects.id, id));
   revalidatePath("/projects");

@@ -4,11 +4,12 @@ import { db } from "@/lib/db";
 import { clients, type NewClient } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 
 export async function getClients() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   return await db.query.clients.findMany({
     where: eq(clients.userId, session.user.id),
@@ -18,7 +19,7 @@ export async function getClients() {
 
 export async function createClient(data: Omit<NewClient, "id" | "createdAt" | "userId">) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db.insert(clients).values({
     ...data,
@@ -30,7 +31,7 @@ export async function createClient(data: Omit<NewClient, "id" | "createdAt" | "u
 
 export async function getClientById(id: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
   const userId = session.user.id;
 
   const client = await db.query.clients.findFirst({
@@ -55,7 +56,7 @@ export async function updateClient(
   data: Partial<Omit<NewClient, "id" | "createdAt" | "userId">>
 ) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db
     .update(clients)
@@ -68,7 +69,7 @@ export async function updateClient(
 
 export async function deleteClient(id: string) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db.delete(clients).where(eq(clients.id, id));
   revalidatePath("/clients");

@@ -4,11 +4,12 @@ import { db } from "@/lib/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 
 export async function getUserProfile() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   const user = await db.query.users.findFirst({
     where: eq(users.id, session.user.id),
@@ -23,7 +24,7 @@ export async function updateUserSettings(data: {
   currency: string;
 }) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) redirect("/login");
 
   await db
     .update(users)

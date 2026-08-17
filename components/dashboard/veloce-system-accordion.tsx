@@ -100,7 +100,7 @@ export function VeloceSystemAccordion() {
   ];
 
   return (
-    <Card className="rounded-3xl border-0 shadow-sm shadow-blue-900/5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 space-y-2">
+    <Card className="rounded-3xl border-0 shadow-sm shadow-blue-900/5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 space-y-2 h-full">
       <div className="px-2 py-1.5 flex items-center justify-between">
         <span className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 font-mono">
           Modul Bisnis & Informasi

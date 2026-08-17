@@ -53,7 +53,7 @@ export function VeloceTopNav({ userName = "Alex Aethera" }: VeloceTopNavProps) {
               key={item.label}
               href={item.href}
               className={cn(
-                "flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200",
+                "flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 ease-out",
                 isActive
                   ? "bg-slate-900 text-white shadow-sm dark:bg-blue-600 dark:text-white"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60"

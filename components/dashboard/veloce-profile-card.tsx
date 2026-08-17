@@ -15,7 +15,7 @@ export function VeloceProfileCard({
   sessionStatus = "Sedang Aktif",
 }: VeloceProfileCardProps) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl border-0 shadow-sm shadow-blue-900/5 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white p-6 flex flex-col justify-between min-h-[220px]">
+    <Card className="relative overflow-hidden rounded-3xl border-0 shadow-sm shadow-blue-900/5 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white p-6 flex flex-col justify-between h-full min-h-[220px]">
       {/* Background Glow */}
       <div className="absolute -top-12 -right-12 w-40 h-40 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />

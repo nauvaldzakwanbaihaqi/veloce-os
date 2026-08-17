@@ -72,40 +72,43 @@ export default async function DashboardPage() {
         teamCapacity={80}
       />
 
-      {/* 3. Main Bento Grid (4 Columns Precision Layout) */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+      {/* 3. Main Bento Grid (4 Columns, 2 Rows Precision Layout) */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-[auto_1fr] gap-6">
         
-        {/* Left Column (col-span-1) */}
-        <div className="col-span-1 flex flex-col gap-6">
-          {/* Top: User Profile Card */}
+        {/* Left Column — Row 1: User Profile Card */}
+        <div className="col-span-1 lg:row-span-1">
           <VeloceProfileCard
             userName={userName}
             role="Administrator"
             sessionStatus="Sedang Aktif"
           />
-
-          {/* Bottom: Accordion Menu (Ringkasan Klien, Laporan Keuangan, Aktivitas) */}
-          <VeloceSystemAccordion />
         </div>
 
-        {/* Middle Column (col-span-2) */}
-        <div className="col-span-1 lg:col-span-2 flex flex-col gap-6">
-          {/* Top Row: Performa Bisnis (Left) + Pelacak Waktu Kerja (Right) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Middle Column — Row 1: Performa Bisnis + Pelacak Waktu */}
+        <div className="col-span-1 lg:col-span-2 lg:row-span-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
             <VelocePerformanceChart />
             <VeloceSessionTracker />
           </div>
+        </div>
 
-          {/* Bottom Row: Jadwal & Tenggat Waktu Calendar */}
+        {/* Right Column — Row 1: Kesehatan Finansial */}
+        <div className="col-span-1 lg:row-span-1">
+          <VeloceSystemHealth healthScore={85} statusText="Arus Kas Positif" />
+        </div>
+
+        {/* Left Column — Row 2: Accordion Menu */}
+        <div className="col-span-1 lg:row-span-1">
+          <VeloceSystemAccordion />
+        </div>
+
+        {/* Middle Column — Row 2: Jadwal & Tenggat Waktu Calendar */}
+        <div className="col-span-1 lg:col-span-2 lg:row-span-1">
           <VeloceTaskScheduler />
         </div>
 
-        {/* Right Column (col-span-1) */}
-        <div className="col-span-1 flex flex-col gap-6">
-          {/* Top: Kesehatan Finansial Card */}
-          <VeloceSystemHealth healthScore={85} statusText="Arus Kas Positif" />
-
-          {/* Bottom: Tugas Prioritas Hari Ini (Dark Card) */}
+        {/* Right Column — Row 2: Tugas Prioritas Hari Ini */}
+        <div className="col-span-1 lg:row-span-1">
           <VeloceActiveProcesses />
         </div>
 

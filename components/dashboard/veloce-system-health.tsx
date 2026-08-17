@@ -23,7 +23,7 @@ export function VeloceSystemHealth({
   ];
 
   return (
-    <Card className="rounded-3xl border-0 shadow-sm shadow-blue-900/5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 flex flex-col justify-between min-h-[220px]">
+    <Card className="rounded-3xl border-0 shadow-sm shadow-blue-900/5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 flex flex-col justify-between h-full min-h-[220px]">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { VeloceTopNav } from "@/components/dashboard/veloce-top-nav";
+import { PageTransition } from "@/components/dashboard/page-transition";
 
 export default async function DashboardLayout({
   children,
@@ -16,9 +17,11 @@ export default async function DashboardLayout({
         {/* Global Top Navigation */}
         <VeloceTopNav userName={userName} userEmail={userEmail} />
         
-        {/* Main Full-width Canvas */}
+        {/* Main Full-width Canvas with Page Transition */}
         <main className="w-full">
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
         </main>
       </div>
     </div>

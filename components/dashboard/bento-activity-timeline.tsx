@@ -29,7 +29,7 @@ export function BentoActivityTimeline({ activities, pendingCount }: BentoActivit
       </CardHeader>
       
       <CardContent className="flex-1 px-6 pb-6 flex flex-col justify-between">
-        <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[15px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
+        <div className="space-y-6 relative before:absolute before:inset-0 before:ml-3.75 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-slate-700 before:to-transparent">
           {activities.length === 0 ? (
             <div className="text-sm text-slate-500 text-center py-8">No recent activities</div>
           ) : (

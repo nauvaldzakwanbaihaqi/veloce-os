@@ -58,7 +58,7 @@ export function VeloceHeaderMetrics({
             </span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-            Selamat datang di <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 bg-clip-text text-transparent">Veloce OS</span>
+            Selamat datang di <span className="bg-linear-to-r from-blue-600 via-indigo-600 to-blue-500 bg-clip-text text-transparent">Veloce OS</span>
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Pusat kendali operasional, manajemen proyek, dan pemantauan finansial bisnis Anda.
@@ -107,7 +107,7 @@ export function VeloceHeaderMetrics({
 
       {/* Top Right: 3 Large Stat Numbers */}
       <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 sm:gap-6 w-full xl:w-auto pt-2 xl:pt-0">
-        <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-end min-w-[130px] flex-1 sm:flex-initial">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-end min-w-32.5 flex-1 sm:flex-initial">
           <div className="flex items-baseline gap-1.5">
             <span className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white font-mono">
               {activeProjectsCount}
@@ -117,7 +117,7 @@ export function VeloceHeaderMetrics({
           <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">Proyek Aktif</span>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-end min-w-[130px] flex-1 sm:flex-initial">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-end min-w-32.5 flex-1 sm:flex-initial">
           <div className="flex items-baseline gap-1.5">
             <span className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white font-mono">
               {totalClientsCount}
@@ -127,7 +127,7 @@ export function VeloceHeaderMetrics({
           <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">Klien Terdaftar</span>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-end min-w-[140px] flex-1 sm:flex-initial border-l-2 border-l-blue-600">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col justify-end min-w-35 flex-1 sm:flex-initial border-l-2 border-l-blue-600">
           <div className="flex items-baseline gap-1.5">
             <span className="text-4xl lg:text-5xl font-black tracking-tight text-blue-600 dark:text-blue-400 font-mono">
               {completedTasksCount}

@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { clients, type NewClient } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -12,7 +12,7 @@ export async function getClients() {
   if (!session?.user?.id) redirect("/login");
 
   return await db.query.clients.findMany({
-    where: eq(clients.userId, session.user.id),
+    where: and(eq(clients.userId, session.user.id), isNull(clients.deletedAt)),
     orderBy: (clients, { desc }) => [desc(clients.createdAt)],
   });
 }
@@ -35,10 +35,11 @@ export async function getClientById(id: string) {
   const userId = session.user.id;
 
   const client = await db.query.clients.findFirst({
-    where: (clients, { eq, and }) =>
-      and(eq(clients.id, id), eq(clients.userId, userId)),
+    where: (clients, { eq, and, isNull }) =>
+      and(eq(clients.id, id), eq(clients.userId, userId), isNull(clients.deletedAt)),
     with: {
       projects: {
+        where: (projects, { isNull }) => isNull(projects.deletedAt),
         with: {
           invoices: true,
         },
@@ -71,7 +72,11 @@ export async function deleteClient(id: string) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  await db.delete(clients).where(eq(clients.id, id));
+  await db
+    .update(clients)
+    .set({ deletedAt: new Date() })
+    .where(and(eq(clients.id, id), eq(clients.userId, session.user.id)));
+  
   revalidatePath("/clients");
 }
 

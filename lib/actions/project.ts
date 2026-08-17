@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { projects, type NewProject } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -12,7 +12,7 @@ export async function getProjects() {
   if (!session?.user?.id) redirect("/login");
 
   return await db.query.projects.findMany({
-    where: eq(projects.userId, session.user.id),
+    where: and(eq(projects.userId, session.user.id), isNull(projects.deletedAt)),
     with: {
       client: true,
     },
@@ -38,8 +38,8 @@ export async function getProjectById(id: string) {
   const userId = session.user.id;
 
   const project = await db.query.projects.findFirst({
-    where: (projects, { eq, and }) =>
-      and(eq(projects.id, id), eq(projects.userId, userId)),
+    where: (projects, { eq, and, isNull }) =>
+      and(eq(projects.id, id), eq(projects.userId, userId), isNull(projects.deletedAt)),
     with: {
       client: true,
       invoices: {
@@ -86,6 +86,9 @@ export async function deleteProject(id: string) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  await db.delete(projects).where(eq(projects.id, id));
+  await db
+    .update(projects)
+    .set({ deletedAt: new Date() })
+    .where(and(eq(projects.id, id), eq(projects.userId, session.user.id)));
   revalidatePath("/projects");
 }

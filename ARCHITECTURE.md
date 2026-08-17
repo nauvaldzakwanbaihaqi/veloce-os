@@ -22,14 +22,14 @@ Setiap kali ada dorongan nambah fitur di luar list "yang dibangun" — cek dulu 
 
 | Layer | Pilihan | Alasan | Trade-off yang diterima |
 |---|---|---|---|
-| Framework | Next.js 15 (App Router) | Fullstack dalam satu repo (UI + server logic), SSR bagus buat demo cepat ke calon klien, ekosistem matang | Sedikit lock-in ke pola Vercel; App Router punya learning curve kalau terbiasa Pages Router |
+| Framework | Next.js 16 (App Router) | Fullstack dalam satu repo (UI + server logic), SSR bagus buat demo cepat ke calon klien, ekosistem matang | Sedikit lock-in ke pola Vercel; `middleware.ts` deprecated → `proxy.ts` di v16 |
 | Bahasa | TypeScript (strict mode) | Data finansial butuh type safety — salah tipe di angka uang itu mahal | Verbosity lebih tinggi, tapi ini investasi yang wajar |
 | Database | PostgreSQL (Neon/Supabase serverless) | Data ini *inherently relasional* (klien → proyek → invoice → item), butuh transaction integrity untuk data uang | Setup sedikit lebih berat dari file-based DB, tapi serverless Postgres menghilangkan sebagian besar friction ini |
 | ORM | Drizzle ORM (+ `@neondatabase/serverless` driver) | Type-safe, query builder-nya dekat dengan SQL asli (predictable, gampang di-debug), tanpa query engine binary — cocok untuk runtime serverless/edge di Vercel + Neon, lebih ringan & cold-start lebih cepat dari Prisma | Migration tooling (`drizzle-kit`) belum sematang Prisma Migrate; sedikit lebih verbose untuk query relasi kompleks (butuh join manual, bukan `include` ala Prisma) |
 | Auth | Auth.js (NextAuth) — credentials provider | Cukup untuk single-user MVP, gratis, kontrol penuh atas data | Kalau nanti butuh SSO/multi-tenant, perlu effort migrasi |
 | UI | Tailwind CSS + shadcn/ui | Bisa di-custom penuh (penting — ini portfolio piece, jangan keliatan "generic AI app"), komponen accessible by default | Butuh disiplin design token biar konsisten |
 | PDF | `@react-pdf/renderer` | Generate PDF langsung dari komponen React di server, tanpa overhead headless browser | Styling PDF lebih terbatas dibanding HTML-to-PDF (Puppeteer) — tapi cukup untuk dokumen invoice |
-| Chart/KPI | Tremor (di atas Recharts) | KPI card & chart siap pakai, konsisten dengan Tailwind | Kurang fleksibel untuk visualisasi custom yang sangat kompleks |
+| Chart/KPI | Recharts 3.x | Library chart paling matang di ekosistem React, mendukung React 19. Tremor (wrapper Recharts) belum support React 19 saat evaluasi | Perlu konfigurasi styling manual (tidak out-of-box seperti Tremor), tapi memberikan kontrol penuh |
 | Reminder | `wa.me` deep link | Zero cost, zero approval proses | Tidak terkirim otomatis — trade-off sadar untuk MVP (lihat non-goals) |
 | Deploy | Vercel + Neon | Zero-config deploy, gampang di-share ke calon klien | Biaya bisa naik di skala besar — bukan concern untuk MVP |
 
@@ -85,7 +85,7 @@ Status `OVERDUE` dihitung derived (bukan disimpan permanen) dari `status = SENT 
 Semua agregasi ini query langsung ke Postgres (bukan dihitung di application layer) — biar konsisten dan scalable kalau data tumbuh.
 
 ## 5. Open Questions (belum diputuskan, jangan asumsi)
-- Format nomor invoice: sequential per user (`INV-001`) atau per tahun (`INV-2026-001`)?
-- Apakah butuh soft-delete untuk client/project (histori tetap ada meski "dihapus"), atau hard-delete cukup untuk MVP?
+- ~~Format nomor invoice~~ → **Diputuskan**: `INV-YYYYMMDD-XXXX` (tanggal + random hex 4 char). Sudah diimplementasikan.
+- ~~Soft-delete vs hard-delete~~ → **Diputuskan**: Soft-delete untuk `clients` dan `projects` (kolom `deletedAt`). Invoice mengikuti — jika client/project soft-deleted, invoice tetap ada untuk histori.
 
 Kalau agent menemukan pertanyaan yang belum terjawab di sini saat implementasi, tambahkan ke section ini — jangan diam-diam mengasumsikan jawaban untuk keputusan yang berdampak ke data finansial.

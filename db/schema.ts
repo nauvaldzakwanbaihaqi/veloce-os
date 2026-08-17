@@ -58,6 +58,7 @@ export const clients = pgTable("clients", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
+  deletedAt: timestamp("deleted_at", { withTimezone: true }),
 });
 
 // ─── Projects ────────────────────────────────────────────────────────────────
@@ -78,6 +79,7 @@ export const projects = pgTable("projects", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
+  deletedAt: timestamp("deleted_at", { withTimezone: true }),
 });
 
 // ─── Invoices ────────────────────────────────────────────────────────────────

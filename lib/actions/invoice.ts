@@ -41,30 +41,28 @@ export async function createInvoice(input: InvoiceInput) {
   const tax = subtotal.mul(taxRate);
   const total = subtotal.add(tax);
 
-  // 2. Perform atomic insert via db.transaction
-  await db.transaction(async (tx) => {
-    const [newInvoice] = await tx.insert(invoices).values({
-      userId,
-      projectId: parsed.projectId,
-      invoiceNumber: generateInvoiceNumber(),
-      issueDate: parsed.issueDate,
-      dueDate: parsed.dueDate,
-      status: "DRAFT",
-      subtotal: subtotal.toFixed(2),
-      tax: tax.toFixed(2),
-      total: total.toFixed(2),
-    }).returning({ id: invoices.id });
+  // 2. Perform sequential inserts since neon-http doesn't support transactions natively
+  const [newInvoice] = await db.insert(invoices).values({
+    userId,
+    projectId: parsed.projectId,
+    invoiceNumber: generateInvoiceNumber(),
+    issueDate: parsed.issueDate,
+    dueDate: parsed.dueDate,
+    status: "DRAFT",
+    subtotal: subtotal.toFixed(2),
+    tax: tax.toFixed(2),
+    total: total.toFixed(2),
+  }).returning({ id: invoices.id });
 
-    const itemsToInsert = itemsWithAmount.map(item => ({
-      invoiceId: newInvoice.id,
-      description: item.description,
-      qty: item.qty,
-      unitPrice: item.unitPrice,
-      amount: item.amount,
-    }));
+  const itemsToInsert = itemsWithAmount.map(item => ({
+    invoiceId: newInvoice.id,
+    description: item.description,
+    qty: item.qty,
+    unitPrice: item.unitPrice,
+    amount: item.amount,
+  }));
 
-    await tx.insert(invoiceItems).values(itemsToInsert);
-  });
+  await db.insert(invoiceItems).values(itemsToInsert);
 
   revalidatePath("/invoices");
 }
@@ -120,4 +118,65 @@ export async function updateInvoiceStatus(id: string, status: "DRAFT" | "SENT" |
 
   await db.update(invoices).set({ status }).where(eq(invoices.id, id));
   revalidatePath("/invoices");
+}
+
+export async function updateInvoice(id: string, input: InvoiceInput) {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
+  const userId = session.user.id;
+
+  const invoice = await db.query.invoices.findFirst({
+    where: eq(invoices.id, id)
+  });
+
+  if (!invoice || invoice.userId !== userId) {
+    throw new Error("Invoice not found");
+  }
+
+  if (invoice.status !== "DRAFT") {
+    throw new Error("Hanya invoice DRAFT yang bisa diedit");
+  }
+
+  const parsed = invoiceSchema.parse(input);
+
+  let subtotal = new Decimal(0);
+  const itemsWithAmount = parsed.items.map(item => {
+    const unitPrice = new Decimal(item.unitPrice);
+    const amount = unitPrice.mul(item.qty);
+    subtotal = subtotal.add(amount);
+    return {
+      ...item,
+      unitPrice: unitPrice.toString(),
+      amount: amount.toString(),
+    };
+  });
+
+  const taxRate = new Decimal(parsed.taxRate).div(100);
+  const tax = subtotal.mul(taxRate);
+  const total = subtotal.add(tax);
+
+  // Sequential updates since neon-http doesn't support transactions
+  await db.update(invoices).set({
+    projectId: parsed.projectId,
+    issueDate: parsed.issueDate,
+    dueDate: parsed.dueDate,
+    subtotal: subtotal.toFixed(2),
+    tax: tax.toFixed(2),
+    total: total.toFixed(2),
+  }).where(eq(invoices.id, id));
+
+  await db.delete(invoiceItems).where(eq(invoiceItems.invoiceId, id));
+
+  const itemsToInsert = itemsWithAmount.map(item => ({
+    invoiceId: id,
+    description: item.description,
+    qty: item.qty,
+    unitPrice: item.unitPrice,
+    amount: item.amount,
+  }));
+
+  await db.insert(invoiceItems).values(itemsToInsert);
+
+  revalidatePath("/invoices");
+  revalidatePath(`/invoices/${id}`);
 }

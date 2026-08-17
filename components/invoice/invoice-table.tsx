@@ -124,7 +124,9 @@ export function InvoiceTable({ invoices }: { invoices: InvoiceWithProject[] }) {
                 return (
                   <TableRow key={inv.id}>
                     <TableCell className="font-medium">
-                      {inv.invoiceNumber}
+                      <Link href={`/invoices/${inv.id}`} className="hover:underline text-primary">
+                        {inv.invoiceNumber}
+                      </Link>
                       {isOverdue && (
                         <Badge variant="destructive" className="ml-2 text-[10px] px-1.5 py-0">
                           Overdue

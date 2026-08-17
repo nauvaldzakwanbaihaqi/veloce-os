@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { invoices, projects, clients } from "@/db/schema";
-import { eq, and, inArray, lt, sql } from "drizzle-orm";
+import { eq, and, inArray, lt, sql, isNull } from "drizzle-orm";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -27,7 +27,8 @@ export async function getDashboardMetrics() {
     .where(
       and(
         eq(projects.userId, userId),
-        inArray(projects.status, ["IN_PROGRESS", "REVIEW"])
+        inArray(projects.status, ["IN_PROGRESS", "REVIEW"]),
+        isNull(projects.deletedAt)
       )
     );
 
@@ -59,7 +60,7 @@ export async function getDashboardMetrics() {
   const [totalClientsResult] = await db
     .select({ count: sql<number>`COUNT(*)::int` })
     .from(clients)
-    .where(eq(clients.userId, userId));
+    .where(and(eq(clients.userId, userId), isNull(clients.deletedAt)));
 
   // 2. Fetch Recent Items for Dashboard Activity
   const recentInvoices = await db.query.invoices.findMany({
@@ -76,7 +77,7 @@ export async function getDashboardMetrics() {
   });
 
   const recentProjects = await db.query.projects.findMany({
-    where: eq(projects.userId, userId),
+    where: and(eq(projects.userId, userId), isNull(projects.deletedAt)),
     with: {
       client: true,
     },

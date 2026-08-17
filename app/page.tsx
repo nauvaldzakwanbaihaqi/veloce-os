@@ -37,54 +37,16 @@ export default async function LandingPage(props: { searchParams?: Promise<{ them
 
   return (
     <div className={cn("min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white", mainBgClass)}>
-      {/* Header Navigation */}
+      {/* Header Navigation — single row: Logo | Center Nav | Right controls */}
       <header className={cn("sticky top-0 z-50 w-full border-b backdrop-blur-md", headerClass)}>
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
+        <div className="container mx-auto relative flex h-14 items-center justify-between px-4 md:px-8">
           {/* Left: Logo */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <span className={cn("font-bold text-xl tracking-tight", textPrimary)}>Veloce OS</span>
           </div>
 
-          {/* Center: Pill Theme Switcher */}
-          <div className="hidden md:flex items-center gap-1 bg-slate-200/60 dark:bg-slate-800/60 p-1 rounded-full">
-            <Link
-              href="?theme=white"
-              className={cn(
-                "px-4 py-1.5 text-xs rounded-full font-semibold transition-all",
-                !isDark
-                  ? "bg-white shadow-sm text-slate-900"
-                  : "text-slate-500 hover:text-slate-300"
-              )}
-            >
-              White
-            </Link>
-            <Link
-              href="?theme=dark"
-              className={cn(
-                "px-4 py-1.5 text-xs rounded-full font-semibold transition-all",
-                isDark
-                  ? "bg-slate-700 shadow-sm text-white"
-                  : "text-slate-500 hover:text-slate-900"
-              )}
-            >
-              Dark
-            </Link>
-          </div>
-
-          {/* Right: Action Buttons */}
-          <div className="flex items-center gap-3">
-            <Link href="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), isDark ? "text-slate-300 hover:bg-slate-800 hover:text-white" : "text-slate-700 hover:bg-slate-200/50 hover:text-slate-900")}>
-              Masuk
-            </Link>
-            <Link href="/dashboard" className={cn(buttonVariants({ size: "sm" }), "bg-blue-600 text-white hover:bg-blue-700")}>
-              Buka Dashboard <ArrowRight className="ml-1.5 h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Centered Navigation Links — below the main header bar */}
-        <div className={cn("border-t", isDark ? "border-slate-800" : "border-slate-100")}>
-          <nav className="container mx-auto flex items-center justify-center gap-10 px-4 md:px-8 h-11">
+          {/* Center: Navigation Links (absolute center) */}
+          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             <a href="#features" className={cn("text-sm font-semibold transition-colors hover:text-blue-600", isDark ? "text-slate-400 hover:text-blue-400" : "text-slate-500 hover:text-blue-600")}>
               Fitur Utama
             </a>
@@ -95,6 +57,42 @@ export default async function LandingPage(props: { searchParams?: Promise<{ them
               Teknologi
             </a>
           </nav>
+
+          {/* Right: Theme Toggle + Action Buttons */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* Pill Theme Switcher */}
+            <div className={cn("hidden md:flex items-center gap-0.5 p-0.5 rounded-full", isDark ? "bg-slate-800" : "bg-slate-200/60")}>
+              <Link
+                href="?theme=white"
+                className={cn(
+                  "px-3 py-1 text-xs rounded-full font-semibold transition-all",
+                  !isDark
+                    ? "bg-white shadow-sm text-slate-900"
+                    : "text-slate-500 hover:text-slate-300"
+                )}
+              >
+                White
+              </Link>
+              <Link
+                href="?theme=dark"
+                className={cn(
+                  "px-3 py-1 text-xs rounded-full font-semibold transition-all",
+                  isDark
+                    ? "bg-slate-700 shadow-sm text-white"
+                    : "text-slate-500 hover:text-slate-900"
+                )}
+              >
+                Dark
+              </Link>
+            </div>
+
+            <Link href="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), isDark ? "text-slate-300 hover:bg-slate-800 hover:text-white" : "text-slate-700 hover:bg-slate-200/50 hover:text-slate-900")}>
+              Masuk
+            </Link>
+            <Link href="/dashboard" className={cn(buttonVariants({ size: "sm" }), "bg-blue-600 text-white hover:bg-blue-700")}>
+              Buka Dashboard <ArrowRight className="ml-1.5 h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </header>
 

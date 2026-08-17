@@ -1,6 +1,5 @@
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { auth } from "@/auth";
+import { VeloceTopNav } from "@/components/dashboard/veloce-top-nav";
 
 export default async function DashboardLayout({
   children,
@@ -8,14 +7,20 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  const user = session?.user;
+  const userName = session?.user?.name || "Alex Aethera";
+  const userEmail = session?.user?.email || "alex@veloce.os";
 
   return (
-    <SidebarProvider>
-      <AppSidebar userName={user?.name ?? "User"} userEmail={user?.email ?? ""} />
-      <SidebarInset>
-        {children}
-      </SidebarInset>
-    </SidebarProvider>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-blue-600 selection:text-white transition-colors duration-300">
+      <div className="max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-8 py-4 space-y-6">
+        {/* Global Top Navigation */}
+        <VeloceTopNav userName={userName} userEmail={userEmail} />
+        
+        {/* Main Full-width Canvas */}
+        <main className="w-full">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 }

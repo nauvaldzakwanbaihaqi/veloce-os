@@ -7,54 +7,54 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export function VeloceTaskScheduler() {
-  const [selectedDay, setSelectedDay] = useState("Wed");
+  const [selectedDay, setSelectedDay] = useState("Rab");
 
   const weekDays = [
-    { day: "Mon", date: "12", isToday: false, tasks: 2 },
-    { day: "Tue", date: "13", isToday: false, tasks: 4 },
-    { day: "Wed", date: "14", isToday: true, tasks: 5 },
-    { day: "Thu", date: "15", isToday: false, tasks: 1 },
-    { day: "Fri", date: "16", isToday: false, tasks: 3 },
-    { day: "Sat", date: "17", isToday: false, tasks: 0 },
-    { day: "Sun", date: "18", isToday: false, tasks: 1 },
+    { day: "Sen", date: "12", isToday: false, tasks: 2 },
+    { day: "Sel", date: "13", isToday: false, tasks: 4 },
+    { day: "Rab", date: "14", isToday: true, tasks: 4 },
+    { day: "Kam", date: "15", isToday: false, tasks: 1 },
+    { day: "Jum", date: "16", isToday: false, tasks: 3 },
+    { day: "Sab", date: "17", isToday: false, tasks: 0 },
+    { day: "Min", date: "18", isToday: false, tasks: 1 },
   ];
 
   const scheduledTasks = [
     {
       id: "t1",
-      time: "09:00 AM",
-      title: "Postgres Snapshot & WAL Archiving",
-      category: "Cron Daemon",
-      status: "SUCCESS",
-      duration: "1.2s",
-      badge: "System",
+      time: "09:00 WIB",
+      title: "Tenggat Desain UI Mobile App - PT Sinar Abadi",
+      category: "Tenggat Proyek",
+      status: "SELESAI",
+      duration: "Tepat Waktu",
+      badge: "Desain",
     },
     {
       id: "t2",
-      time: "11:30 AM",
-      title: "Invoice Due Date & WhatsApp Reminder Dispatch",
-      category: "Billing Service",
-      status: "SUCCESS",
-      duration: "450ms",
-      badge: "Finance",
+      time: "11:30 WIB",
+      title: "Pengiriman Invoice #INV-008 & Reminder WhatsApp",
+      category: "Penagihan",
+      status: "SELESAI",
+      duration: "Terkirim",
+      badge: "Invoice",
     },
     {
       id: "t3",
-      time: "02:15 PM",
-      title: "Zod Schema & Audit Logs Verification",
-      category: "Security",
-      status: "IN_PROGRESS",
-      duration: "Running",
-      badge: "Security",
+      time: "14:00 WIB",
+      title: "Meeting Evaluasi Progres dengan Klien Beta",
+      category: "Pertemuan",
+      status: "BERJALAN",
+      duration: "45 Menit",
+      badge: "Klien",
     },
     {
       id: "t4",
-      time: "06:00 PM",
-      title: "Client CRM Index & Analytics Aggregation",
-      category: "Analytics",
-      status: "PENDING",
-      duration: "Scheduled",
-      badge: "CRM",
+      time: "17:00 WIB",
+      title: "Penyerahan Source Code & Dokumentasi Web Veloce",
+      category: "Milestone",
+      status: "TERJADWAL",
+      duration: "Hari Ini",
+      badge: "Development",
     },
   ];
 
@@ -68,30 +68,30 @@ export function VeloceTaskScheduler() {
           </div>
           <div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              System Logs & Task Scheduler
+              Jadwal & Tenggat Waktu
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Automated Daemons, Cron Schedules & Background Pipelines
+              Kalender Deadline Proyek & Jadwal Penagihan Invoice
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <Badge className="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 border-0 font-mono text-xs">
-            August 2026
+          <Badge className="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 border-0 font-sans text-xs">
+            Agustus 2026
           </Badge>
           <div className="flex items-center gap-1">
             <button
               type="button"
               className="p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
-              aria-label="Previous week"
+              aria-label="Minggu sebelumnya"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               type="button"
               className="p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
-              aria-label="Next week"
+              aria-label="Minggu berikutnya"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -145,8 +145,8 @@ export function VeloceTaskScheduler() {
       {/* Scheduled Task Items List */}
       <div className="space-y-2.5 pt-1">
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 px-1 font-mono">
-          <span>Active Pipeline Schedule · {selectedDay}, Aug 2026</span>
-          <span className="text-blue-600 dark:text-blue-400">4 tasks queued</span>
+          <span>Jadwal Operasional · {selectedDay}, 14 Agu 2026</span>
+          <span className="text-blue-600 dark:text-blue-400">4 Jadwal Aktif</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -163,9 +163,9 @@ export function VeloceTaskScheduler() {
                 <span
                   className={cn(
                     "text-[10px] font-mono px-2 py-0.5 rounded-full border font-semibold",
-                    task.status === "SUCCESS"
+                    task.status === "SELESAI"
                       ? "text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
-                      : task.status === "IN_PROGRESS"
+                      : task.status === "BERJALAN"
                       ? "text-blue-700 bg-blue-50 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800 animate-pulse"
                       : "text-slate-600 bg-slate-100 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700"
                   )}
@@ -178,9 +178,9 @@ export function VeloceTaskScheduler() {
                 <h4 className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
                   {task.title}
                 </h4>
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 dark:text-slate-500 mt-1">
-                  <span>Category: {task.category}</span>
-                  <span>Latency: {task.duration}</span>
+                <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 mt-1">
+                  <span>Kategori: {task.category}</span>
+                  <span>Status: {task.duration}</span>
                 </div>
               </div>
             </div>

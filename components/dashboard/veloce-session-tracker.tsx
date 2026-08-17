@@ -6,7 +6,7 @@ import { Play, Pause, RotateCcw, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function VeloceSessionTracker() {
-  const [seconds, setSeconds] = useState(9320); // starts around 02:35:20
+  const [seconds, setSeconds] = useState(9682); // 02:41:22
   const [isRunning, setIsRunning] = useState(true);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export function VeloceSessionTracker() {
 
   const formattedTime = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 
-  // Calculate percentage of an 8-hour shift for circular gauge ring
+  // Percentage of 8-hour daily target
   const progressPercent = Math.min(100, Math.round((seconds / (8 * 3600)) * 100));
   const strokeDashoffset = 283 - (283 * progressPercent) / 100;
 
@@ -40,16 +40,16 @@ export function VeloceSessionTracker() {
             <span className="p-1.5 rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Clock className="h-4 w-4" />
             </span>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Session Tracker</h3>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Pelacak Waktu Kerja</h3>
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-            Uptime & Real-time Daemon
+            Pencatat Durasi Sesi & Produktivitas
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200/80 text-[10px] font-mono font-medium">
+        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200/80 text-[10px] font-mono font-semibold">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          Live
+          Aktif
         </div>
       </div>
 
@@ -83,11 +83,11 @@ export function VeloceSessionTracker() {
 
           {/* Center Digital Time */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <span className="text-sm font-extrabold text-slate-900 dark:text-white font-mono tracking-tight">
+            <span className="text-sm font-black text-slate-900 dark:text-white font-mono tracking-tight">
               {formattedTime}
             </span>
-            <span className="text-[9px] uppercase font-mono tracking-wider text-slate-400 dark:text-slate-500">
-              Uptime
+            <span className="text-[9px] uppercase font-mono tracking-wider text-slate-400 dark:text-slate-500 font-semibold">
+              Waktu Kerja
             </span>
           </div>
         </div>
@@ -104,7 +104,7 @@ export function VeloceSessionTracker() {
                   ? "bg-slate-900 text-white hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700"
                   : "bg-blue-600 text-white hover:bg-blue-700"
               )}
-              aria-label={isRunning ? "Pause timer" : "Start timer"}
+              aria-label={isRunning ? "Jeda timer" : "Mulai timer"}
             >
               {isRunning ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 fill-current" />}
             </button>
@@ -121,15 +121,15 @@ export function VeloceSessionTracker() {
 
           <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400 space-y-0.5">
             <div>Target: 08:00:00</div>
-            <div>Shift: {progressPercent}% done</div>
+            <div>Tercapai: {progressPercent}%</div>
           </div>
         </div>
       </div>
 
       {/* Footer Metrics */}
       <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
-        <span>State: <strong className={isRunning ? "text-emerald-600 dark:text-emerald-400" : "text-amber-500"}>{isRunning ? "Recording" : "Paused"}</strong></span>
-        <span>Idle: <strong>0%</strong></span>
+        <span>Status: <strong className={isRunning ? "text-emerald-600 dark:text-emerald-400" : "text-amber-500"}>{isRunning ? "Merekam" : "Jeda"}</strong></span>
+        <span>Fokus: <strong>100%</strong></span>
       </div>
     </Card>
   );

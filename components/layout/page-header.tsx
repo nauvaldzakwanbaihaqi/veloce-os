@@ -1,6 +1,3 @@
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-
 interface PageHeaderProps {
   title: string;
   description?: string;
@@ -9,18 +6,14 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, action }: PageHeaderProps) {
   return (
-    <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
-      <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="h-4 mr-2" />
-      <div className="flex flex-1 items-center justify-between">
-        <div>
-          <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
-          {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
-          )}
-        </div>
-        {action && <div>{action}</div>}
+    <header className="flex flex-col sm:flex-row sm:h-16 shrink-0 sm:items-center justify-between gap-4 border-b border-slate-200/80 dark:border-slate-800 pb-4 mb-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{title}</h1>
+        {description && (
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{description}</p>
+        )}
       </div>
+      {action && <div className="flex items-center gap-3">{action}</div>}
     </header>
   );
 }

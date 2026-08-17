@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -15,13 +15,13 @@ import {
 
 export function VelocePerformanceChart() {
   const data = [
-    { hour: "08:00", load: 28, isPeak: false },
-    { hour: "10:00", load: 45, isPeak: false },
-    { hour: "12:00", load: 82, isPeak: true },
-    { hour: "14:00", load: 64, isPeak: false },
-    { hour: "16:00", load: 91, isPeak: true },
-    { hour: "18:00", load: 52, isPeak: false },
-    { hour: "20:00", load: 34, isPeak: false },
+    { bulan: "Jan", pendapatan: 28, isPeak: false },
+    { bulan: "Feb", pendapatan: 35, isPeak: false },
+    { bulan: "Mar", pendapatan: 42, isPeak: false },
+    { bulan: "Apr", pendapatan: 50, isPeak: true },
+    { bulan: "Mei", pendapatan: 38, isPeak: false },
+    { bulan: "Jun", pendapatan: 58, isPeak: true },
+    { bulan: "Jul", pendapatan: 49.95, isPeak: false },
   ];
 
   return (
@@ -31,17 +31,17 @@ export function VelocePerformanceChart() {
         <div>
           <div className="flex items-center gap-2">
             <span className="p-1.5 rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-              <Activity className="h-4 w-4" />
+              <TrendingUp className="h-4 w-4" />
             </span>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">System Performance</h3>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Performa Bisnis</h3>
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-            Throughput & Core Utilization
+            Pertumbuhan Pendapatan Bulanan
           </p>
         </div>
 
         <Badge className="bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border-blue-200/80 font-mono text-[10px]">
-          +14.8% ops
+          +24.5% bln ini
         </Badge>
       </div>
 
@@ -50,7 +50,7 @@ export function VelocePerformanceChart() {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
             <XAxis
-              dataKey="hour"
+              dataKey="bulan"
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 10, fill: "#94a3b8" }}
@@ -59,7 +59,7 @@ export function VelocePerformanceChart() {
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 9, fill: "#94a3b8" }}
-              domain={[0, 100]}
+              domain={[0, 70]}
               width={25}
             />
             <Tooltip
@@ -72,9 +72,9 @@ export function VelocePerformanceChart() {
                 boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
               }}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(val: any) => [`${val}% Load`, "Throughput"]}
+              formatter={(val: any) => [`Rp ${val} Juta`, "Pendapatan"]}
             />
-            <Bar dataKey="load" radius={[6, 6, 2, 2]}>
+            <Bar dataKey="pendapatan" radius={[6, 6, 2, 2]}>
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
@@ -88,9 +88,9 @@ export function VelocePerformanceChart() {
       </div>
 
       {/* Footer Metrics */}
-      <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
-        <span>Avg Load: <strong className="text-slate-900 dark:text-white">56.5%</strong></span>
-        <span>Peak: <strong className="text-blue-600 dark:text-blue-400">91% @ 16:00</strong></span>
+      <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10.5px] font-mono text-slate-500 dark:text-slate-400">
+        <span>Rata: <strong className="text-slate-900 dark:text-white">Rp 43jt/bln</strong></span>
+        <span>Puncak: <strong className="text-blue-600 dark:text-blue-400">Rp 58jt (Jun)</strong></span>
       </div>
     </Card>
   );

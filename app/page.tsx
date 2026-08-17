@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, CheckCircle2, Zap, FileText, Users, MessageCircle, DollarSign, Briefcase } from "lucide-react";
 
@@ -23,12 +24,12 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" render={<Link href="/login" />}>
+            <Link href="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
               Masuk
-            </Button>
-            <Button size="sm" render={<Link href="/dashboard" />}>
+            </Link>
+            <Link href="/dashboard" className={cn(buttonVariants({ size: "sm" }))}>
               Buka Dashboard <ArrowRight className="ml-1.5 h-4 w-4" />
-            </Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -49,12 +50,18 @@ export default function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button size="lg" className="w-full sm:w-auto text-base px-8 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all" render={<Link href="/dashboard" />}>
+            <Link 
+              href="/dashboard" 
+              className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto text-base px-8 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all")}
+            >
               Mulai Pakai Veloce OS <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto text-base px-8 h-12 rounded-xl" render={<Link href="/login" />}>
+            </Link>
+            <Link 
+              href="/login" 
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto text-base px-8 h-12 rounded-xl")}
+            >
               Login Akun Demo
-            </Button>
+            </Link>
           </div>
 
           {/* Key Bullet Highlights */}

@@ -124,6 +124,7 @@ export function FinancialCharts({
                     ))}
                   </Pie>
                   <Tooltip
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     formatter={(value: any) => formatCurrency(value)}
                     contentStyle={{
                       borderRadius: "8px",
@@ -204,6 +205,7 @@ export function FinancialCharts({
                     background: "hsl(var(--popover))",
                     color: "hsl(var(--popover-foreground))",
                   }}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   formatter={(value: any) => [`${value} proyek`, "Jumlah"]}
                 />
                 <Bar dataKey="count" radius={[0, 4, 4, 0]}>

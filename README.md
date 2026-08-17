@@ -14,7 +14,7 @@ Pusat kendali operasional & finansial ringkas untuk freelancer, solopreneur, dan
 2. **One-Click Invoice** — generate invoice, export PDF profesional, reminder pembayaran via link WhatsApp.
 3. **Financial Dashboard** — KPI card & grafik: total revenue, proyek aktif, invoice overdue/unpaid.
 
-## Cara menggunakan web app ini
+## Bagaimana cara menggunakannya?
 
 ### 1. Buka & Login
 1. Akses halaman utama Veloce OS di browser.

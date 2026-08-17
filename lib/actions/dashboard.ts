@@ -62,6 +62,30 @@ export async function getDashboardMetrics() {
     .from(clients)
     .where(and(eq(clients.userId, userId), isNull(clients.deletedAt)));
 
+  // Project Status Breakdown
+  const projectStatuses = await db
+    .select({
+      status: projects.status,
+      count: sql<number>`COUNT(*)::int`,
+    })
+    .from(projects)
+    .where(and(eq(projects.userId, userId), isNull(projects.deletedAt)))
+    .groupBy(projects.status);
+
+  const projectStatusBreakdown = {
+    lead: 0,
+    inProgress: 0,
+    review: 0,
+    completed: 0,
+  };
+
+  projectStatuses.forEach((row) => {
+    if (row.status === "LEAD") projectStatusBreakdown.lead = row.count;
+    if (row.status === "IN_PROGRESS") projectStatusBreakdown.inProgress = row.count;
+    if (row.status === "REVIEW") projectStatusBreakdown.review = row.count;
+    if (row.status === "COMPLETED") projectStatusBreakdown.completed = row.count;
+  });
+
   // 2. Fetch Recent Items for Dashboard Activity
   const recentInvoices = await db.query.invoices.findMany({
     where: eq(invoices.userId, userId),
@@ -93,6 +117,7 @@ export async function getDashboardMetrics() {
     overdueInvoicesTotal: overdueInvoicesResult?.total ?? "0",
     overdueInvoicesCount: overdueInvoicesResult?.count ?? 0,
     totalClientsCount: totalClientsResult?.count ?? 0,
+    projectStatusBreakdown,
     recentInvoices,
     recentProjects,
   };

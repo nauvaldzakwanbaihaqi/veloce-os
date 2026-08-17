@@ -21,12 +21,12 @@ interface FinancialChartsProps {
   unpaidTotal: string;
   overdueTotal: string;
   activeProjectsCount: number;
-  recentProjects: Array<{
-    id: string;
-    title: string;
-    status: string;
-    value: string | null;
-  }>;
+  projectStatusBreakdown: {
+    lead: number;
+    inProgress: number;
+    review: number;
+    completed: number;
+  };
 }
 
 function formatCurrency(val: string | number) {
@@ -48,7 +48,7 @@ export function FinancialCharts({
   totalRevenue,
   unpaidTotal,
   overdueTotal,
-  recentProjects,
+  projectStatusBreakdown,
 }: FinancialChartsProps) {
   // Use decimal.js for precise ratio calculation (ARCHITECTURE.md compliance)
   const revDec = new Decimal(totalRevenue || "0");
@@ -74,14 +74,12 @@ export function FinancialCharts({
     revenueData.push({ name: "Belum Ada Data", value: 1, color: "#e5e7eb" });
   }
 
-  // Project status distribution for bar chart
-  const statusCounts = recentProjects.reduce(
-    (acc, p) => {
-      acc[p.status] = (acc[p.status] || 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>
-  );
+  const statusCounts: Record<string, number> = {
+    LEAD: projectStatusBreakdown.lead,
+    IN_PROGRESS: projectStatusBreakdown.inProgress,
+    REVIEW: projectStatusBreakdown.review,
+    COMPLETED: projectStatusBreakdown.completed,
+  };
 
   const projectData = Object.entries(STATUS_CONFIG).map(([key, cfg]) => ({
     name: cfg.label,
@@ -90,9 +88,9 @@ export function FinancialCharts({
   }));
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-2 h-full">
       {/* 1. Revenue Donut Chart */}
-      <Card>
+      <Card className="flex flex-col h-full border-0 shadow-lg shadow-blue-900/5 bg-white dark:bg-slate-900/50">
         <CardHeader>
           <CardTitle className="text-base font-semibold flex items-center justify-between">
             <span>Rasio Realisasi Pendapatan</span>
@@ -166,7 +164,7 @@ export function FinancialCharts({
       </Card>
 
       {/* 2. Project Pipeline Bar Chart */}
-      <Card>
+      <Card className="flex flex-col h-full border-0 shadow-lg shadow-blue-900/5 bg-white dark:bg-slate-900/50">
         <CardHeader>
           <CardTitle className="text-base font-semibold flex items-center justify-between">
             <span>Distribusi Pipeline Proyek</span>

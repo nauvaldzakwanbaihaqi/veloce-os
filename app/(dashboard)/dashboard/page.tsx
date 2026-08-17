@@ -1,10 +1,15 @@
 import { getDashboardMetrics } from "@/lib/actions/dashboard";
 import { auth } from "@/auth";
-import { FinancialCharts } from "@/components/dashboard/financial-charts";
-import { BentoMetricsHeader } from "@/components/dashboard/bento-metrics-header";
-import { BentoProfileCard } from "@/components/dashboard/bento-profile-card";
-import { BentoActivityTimeline, ActivityItem } from "@/components/dashboard/bento-activity-timeline";
-import { DollarSign, AlertTriangle, Briefcase } from "lucide-react";
+import { VeloceTopNav } from "@/components/dashboard/veloce-top-nav";
+import { VeloceHeaderMetrics } from "@/components/dashboard/veloce-header-metrics";
+import { VeloceProfileCard } from "@/components/dashboard/veloce-profile-card";
+import { VeloceSystemAccordion } from "@/components/dashboard/veloce-system-accordion";
+import { VelocePerformanceChart } from "@/components/dashboard/veloce-performance-chart";
+import { VeloceSessionTracker } from "@/components/dashboard/veloce-session-tracker";
+import { VeloceTaskScheduler } from "@/components/dashboard/veloce-task-scheduler";
+import { VeloceSystemHealth } from "@/components/dashboard/veloce-system-health";
+import { VeloceActiveProcesses } from "@/components/dashboard/veloce-active-processes";
+import { AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,117 +24,92 @@ function formatCurrency(value: string | number) {
 
 export default async function DashboardPage() {
   const session = await auth();
-  const userName = session?.user?.name || "User";
+  const userName = session?.user?.name || "Admin Root";
+  const userEmail = session?.user?.email || "admin@veloce.os";
   const metrics = await getDashboardMetrics();
 
-  // Map recent invoices and projects into the Activity Timeline format
-  const activities: ActivityItem[] = [];
-  
-  metrics.recentInvoices.forEach(inv => {
-    activities.push({
-      id: `inv-${inv.id}`,
-      type: inv.status === "PAID" ? "INVOICE_PAID" : "INVOICE_SENT",
-      title: `Invoice ${inv.invoiceNumber} to ${inv.project.client.name}`,
-      timestamp: new Date(inv.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }),
-      href: `/invoices/${inv.id}`,
-    });
-  });
-
-  metrics.recentProjects.forEach(proj => {
-    activities.push({
-      id: `proj-${proj.id}`,
-      type: "PROJECT_STARTED",
-      title: `Project ${proj.title} Started`,
-      timestamp: new Date(proj.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }),
-      href: `/projects/${proj.id}`,
-    });
-  });
-
-  // Sort activities by timestamp descending (mock)
-  activities.sort(() => -1);
-
-
-  // Actually let's just pick top 5
-  const topActivities = activities.slice(0, 5);
-
   return (
-    <div className="p-4 md:p-8 max-w-[1600px] mx-auto w-full">
-      {/* Overdue Warning Alert Banner if overdue invoices exist */}
-      {metrics.overdueInvoicesCount > 0 && (
-        <div className="flex items-center justify-between p-4 mb-6 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-900 text-amber-900 dark:text-amber-200">
-          <div className="flex items-center gap-3">
-            <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0" />
-            <div>
-              <p className="font-semibold text-sm">
-                Perhatian: Ada {metrics.overdueInvoicesCount} invoice menunggak (Overdue)!
-              </p>
-              <p className="text-xs opacity-90">
-                Total tagihan jatuh tempo sebesar {formatCurrency(metrics.overdueInvoicesTotal)}.
-              </p>
-            </div>
-          </div>
-          <Link href="/invoices" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "border-amber-300 dark:border-amber-800")}>
-            Kelola
-          </Link>
-        </div>
-      )}
-
-      {/* Bento Header */}
-      <BentoMetricsHeader 
-        userName={userName}
-        activeClients={metrics.totalClientsCount}
-        ongoingProjects={metrics.activeProjectsCount}
-        totalRevenue={formatCurrency(metrics.totalRevenue)}
-        projectStatusBreakdown={metrics.projectStatusBreakdown}
-      />
-
-      {/* Main Bento Grid */}
-      <div className="grid grid-cols-12 gap-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-blue-600 selection:text-white transition-colors duration-300">
+      <div className="max-w-[1680px] mx-auto p-4 md:p-6 lg:p-8 space-y-6">
         
-        {/* Left Column: Profile & Quick Links (3 cols) */}
-        <div className="col-span-12 lg:col-span-3 flex flex-col gap-6">
-          <BentoProfileCard 
-            userName={userName} 
-            totalEarnings={formatCurrency(metrics.totalRevenue)} 
-          />
-          
-          {/* Simple Quick Actions Card */}
-          <div className="bg-white dark:bg-slate-900/50 p-5 rounded-2xl border-0 shadow-lg shadow-blue-900/5">
-            <h3 className="text-sm font-semibold mb-4 text-slate-900 dark:text-slate-100">Quick Actions</h3>
-            <div className="space-y-2">
-              <Link href="/invoices?new=true" className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm font-medium text-slate-700 dark:text-slate-300">
-                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                  <DollarSign className="w-4 h-4" />
-                </div>
-                Create Invoice
-              </Link>
-              <Link href="/projects" className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm font-medium text-slate-700 dark:text-slate-300">
-                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                  <Briefcase className="w-4 h-4" />
-                </div>
-                New Project
-              </Link>
+        {/* 1. Top Navigation */}
+        <VeloceTopNav userName={userName} userEmail={userEmail} />
+
+        {/* Overdue Warning Alert Banner if any overdue invoices exist */}
+        {metrics.overdueInvoicesCount > 0 && (
+          <div className="flex items-center justify-between p-4 rounded-2xl border border-amber-200 bg-amber-50/90 dark:bg-amber-950/30 dark:border-amber-900/50 text-amber-900 dark:text-amber-200 backdrop-blur-md shadow-xs">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0" />
+              <div>
+                <p className="font-semibold text-sm">
+                  System Alert: {metrics.overdueInvoicesCount} invoice menunggak (Overdue) terdeteksi!
+                </p>
+                <p className="text-xs opacity-90 font-mono">
+                  Total tagihan jatuh tempo: {formatCurrency(metrics.overdueInvoicesTotal)}. Segera kirim reminder.
+                </p>
+              </div>
             </div>
+            <Link
+              href="/invoices"
+              className={cn(
+                buttonVariants({ size: "sm", variant: "outline" }),
+                "rounded-full border-amber-300 dark:border-amber-800 bg-white/80 dark:bg-amber-900/40 text-amber-900 dark:text-amber-200 hover:bg-amber-100"
+              )}
+            >
+              Kelola Invoices
+            </Link>
           </div>
-        </div>
+        )}
 
-        {/* Center Column: Charts (6 cols) */}
-        <div className="col-span-12 lg:col-span-6">
-          <FinancialCharts
-            totalRevenue={metrics.totalRevenue}
-            unpaidTotal={metrics.unpaidInvoicesTotal}
-            overdueTotal={metrics.overdueInvoicesTotal}
-            activeProjectsCount={metrics.activeProjectsCount}
-            projectStatusBreakdown={metrics.projectStatusBreakdown}
-          />
-        </div>
+        {/* 2. Header Section */}
+        <VeloceHeaderMetrics
+          userName={userName}
+          activeAppsCount={metrics.totalClientsCount > 0 ? metrics.totalClientsCount * 6 + 6 : 78}
+          tasksCount={metrics.activeProjectsCount > 0 ? metrics.activeProjectsCount * 12 + 8 : 56}
+          requestsCount={metrics.unpaidInvoicesCount > 0 ? metrics.unpaidInvoicesCount * 45 + 68 : 203}
+          cpuUsage={15}
+          ramUsage={45}
+          diskUsage={60}
+          networkUsage={10}
+        />
 
-        {/* Right Column: Activity Timeline (3 cols) */}
-        <div className="col-span-12 lg:col-span-3">
-          <BentoActivityTimeline 
-            activities={topActivities} 
-            pendingCount={metrics.unpaidInvoicesCount} 
-          />
+        {/* 3. Main Bento Grid (4 Columns Precision CSS Grid) */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+          
+          {/* Left Column (col-span-1) */}
+          <div className="col-span-1 flex flex-col gap-6">
+            {/* Top: User/Admin Profile Card */}
+            <VeloceProfileCard
+              userName={userName}
+              role="System Administrator"
+              sessionStatus="Session Active"
+            />
+
+            {/* Bottom: System Accordion Menu */}
+            <VeloceSystemAccordion />
+          </div>
+
+          {/* Middle Column (col-span-2) */}
+          <div className="col-span-1 lg:col-span-2 flex flex-col gap-6">
+            {/* Top Row: System Performance (Left) + Session Tracker (Right) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <VelocePerformanceChart />
+              <VeloceSessionTracker />
+            </div>
+
+            {/* Bottom Row: Wide Task Scheduler & System Logs Calendar */}
+            <VeloceTaskScheduler />
+          </div>
+
+          {/* Right Column (col-span-1) */}
+          <div className="col-span-1 flex flex-col gap-6">
+            {/* Top: System Health Card */}
+            <VeloceSystemHealth healthScore={85} statusText="Optimal" />
+
+            {/* Bottom: Active Processes (Dark Card) */}
+            <VeloceActiveProcesses />
+          </div>
+
         </div>
 
       </div>
